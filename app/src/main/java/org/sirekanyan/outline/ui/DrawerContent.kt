@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +45,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import org.sirekanyan.outline.AboutDialog
 import org.sirekanyan.outline.AddServerDialog
+import org.sirekanyan.outline.EditPrefixDialog
 import org.sirekanyan.outline.HelloPage
 import org.sirekanyan.outline.MainState
 import org.sirekanyan.outline.R
@@ -50,6 +53,7 @@ import org.sirekanyan.outline.SelectedPage
 import org.sirekanyan.outline.api.model.getTotalBadgeText
 import org.sirekanyan.outline.app
 import org.sirekanyan.outline.ext.rememberFlowAsState
+import org.sirekanyan.outline.feature.prefix.Prefix
 import org.sirekanyan.outline.isDebugBuild
 
 @Composable
@@ -136,6 +140,12 @@ private fun DrawerSheetContent(state: MainState, insets: PaddingValues) {
         }
         HorizontalDivider(Modifier.padding(vertical = 8.dp))
         val context = LocalContext.current
+        val prefix by state.prefix.collectAsState(Prefix.DEFAULT)
+        DrawerItem(
+            icon = Icons.Default.Edit,
+            label = stringResource(R.string.outln_drawer_edit_prefix),
+            onClick = { state.dialog = EditPrefixDialog(prefix) },
+        )
         if (isDebugBuild()) {
             val debugDao = remember { context.app().debugDao }
             val scope = rememberCoroutineScope()

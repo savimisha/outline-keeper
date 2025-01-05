@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
@@ -29,6 +30,7 @@ import org.sirekanyan.outline.feature.keys.KeysErrorState
 import org.sirekanyan.outline.feature.keys.KeysIdleState
 import org.sirekanyan.outline.feature.keys.KeysLoadingState
 import org.sirekanyan.outline.feature.keys.KeysState
+import org.sirekanyan.outline.feature.prefix.Prefix
 import org.sirekanyan.outline.feature.sort.Sorting
 import org.sirekanyan.outline.repository.KeyRepository
 import org.sirekanyan.outline.repository.ServerRepository
@@ -68,10 +70,17 @@ class MainState(
     var isFabLoading by mutableStateOf(false)
     var deletingKey by mutableStateOf<Key?>(null)
     val sorting = prefs.observe(Sorting.KEY).map(Sorting::getByKey)
+    val prefix = prefs.observe(Prefix.KEY).mapNotNull { it }
 
     fun putSorting(sorting: Sorting) {
         launch {
             prefs.put(Sorting.KEY, sorting.key)
+        }
+    }
+
+    fun putPrefix(prefix: String) {
+        launch {
+            prefs.put(Prefix.KEY, prefix)
         }
     }
 
@@ -195,7 +204,9 @@ data object AddServerDialog : Dialog()
 
 data class RenameServerDialog(val server: Server) : Dialog()
 
-data class RenameKeyDialog(val key: Key) : Dialog()
+data class RenameKeyDialog(val key: Key, val prefix: String) : Dialog()
+
+data class EditPrefixDialog(val prefix: String) : Dialog()
 
 data class DeleteKeyDialog(val key: Key) : Dialog()
 

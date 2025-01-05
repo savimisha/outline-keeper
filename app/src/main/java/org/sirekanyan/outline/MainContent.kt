@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
@@ -52,6 +51,7 @@ import org.sirekanyan.outline.feature.keys.KeysErrorContent
 import org.sirekanyan.outline.feature.keys.KeysErrorState
 import org.sirekanyan.outline.feature.keys.KeysIdleState
 import org.sirekanyan.outline.feature.keys.KeysLoadingState
+import org.sirekanyan.outline.feature.prefix.Prefix
 import org.sirekanyan.outline.feature.sort.SortBottomSheet
 import org.sirekanyan.outline.feature.sort.Sorting
 import org.sirekanyan.outline.ui.AddKeyButton
@@ -63,6 +63,7 @@ import org.sirekanyan.outline.ui.icons.IconSort
 @Composable
 fun MainContent(state: MainState) {
     val sorting by state.sorting.collectAsState(Sorting.DEFAULT)
+    val prefix by state.prefix.collectAsState(Prefix.DEFAULT)
     var isSortingVisible by remember { mutableStateOf(false) }
     ModalNavigationDrawer({ DrawerContent(state) }, Modifier, state.drawer, !state.drawerDisabled) {
         val insets = WindowInsets.systemBars.asPaddingValues() + PaddingValues(top = 64.dp)
@@ -216,8 +217,9 @@ fun MainContent(state: MainState) {
         state.selectedKey?.let { key ->
             KeyBottomSheet(
                 key = key,
+                prefix = prefix,
                 onDismissRequest = { state.selectedKey = null },
-                onEditClick = { state.dialog = RenameKeyDialog(key) },
+                onEditClick = { state.dialog = RenameKeyDialog(key, prefix) },
                 onDeleteClick = { state.dialog = DeleteKeyDialog(key) },
             )
         }

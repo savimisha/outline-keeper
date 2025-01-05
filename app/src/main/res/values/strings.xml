@@ -11,6 +11,7 @@
     <!-- Drawer -->
     <string name="outln_drawer_add">Add server</string>
     <string name="outln_drawer_all">All servers</string>
+    <string name="outln_drawer_edit_prefix">Edit prefix</string>
     <string name="outln_drawer_reset">Reset database</string>
     <string name="outln_drawer_about">About</string>
 
@@ -66,7 +67,9 @@
     <!-- Rename Dialog -->
     <string name="outln_title_edit_server">Edit server</string>
     <string name="outln_title_edit_key">Edit key</string>
+    <string name="outln_title_edit_prefix">Edit prefix</string>
     <string name="outln_label_name">Name</string>
+    <string name="outln_label_prefix">Prefix</string>
     <string name="outln_action_save">Save</string>
     <string name="outln_error_check_name">Check name or try again</string>
 

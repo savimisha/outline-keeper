@@ -24,10 +24,12 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import org.sirekanyan.outline.BuildConfig
@@ -52,27 +54,29 @@ fun AboutDialogContent(onDismiss: () -> Unit) {
             val annotatedString = buildAnnotatedString {
                 append("An application for managing Outline VPN servers. ")
                 append("You can find more information on ")
-                withStyle(SpanStyle(MaterialTheme.colorScheme.primary)) {
-                    pushStringAnnotation("link", "https://getoutline.org")
-                    append("getoutline.org")
-                    pop()
+                val url = "https://getoutline.org"
+                withLink(LinkAnnotation.Url(url = "https://getoutline.org") {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    onDismiss()
+                }) {
+                    withStyle(SpanStyle(MaterialTheme.colorScheme.primary)) {
+                        append("getoutline.org")
+                    }
                 }
                 append("\n\nSource code of this app is open and available on ")
-                withStyle(SpanStyle(MaterialTheme.colorScheme.primary)) {
-                    pushStringAnnotation("link", stringResource(R.string.outln_source_code_link))
-                    append(stringResource(R.string.outln_source_code_title))
-                    pop()
+                val url1 = stringResource(R.string.outln_source_code_link)
+                withLink(LinkAnnotation.Url(url = url) { _ ->
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url1)))
+                    onDismiss()
+                }) {
+                    withStyle(SpanStyle(MaterialTheme.colorScheme.primary)) {
+                        append(stringResource(R.string.outln_source_code_title))
+                    }
                 }
             }
             val textColor = MaterialTheme.colorScheme.onSurfaceVariant
             val textStyle = MaterialTheme.typography.bodyMedium.copy(textColor)
-            ClickableText(annotatedString, style = textStyle) { offset ->
-                val links = annotatedString.getStringAnnotations("link", offset, offset)
-                links.firstOrNull()?.item?.let { link ->
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
-                    onDismiss()
-                }
-            }
+            Text(text = annotatedString, style = textStyle)
         },
         onDismissRequest = onDismiss,
         confirmButton = {

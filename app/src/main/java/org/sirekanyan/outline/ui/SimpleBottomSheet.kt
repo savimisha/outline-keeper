@@ -31,7 +31,7 @@ fun SimpleBottomSheet(
         sheetState = sheetState,
         shape = RectangleShape,
         dragHandle = {},
-        windowInsets = WindowInsets(0.dp),
+        contentWindowInsets = { WindowInsets(0.dp) },
     ) {
         Column(Modifier.padding(insets).padding(top = 4.dp)) {
             Text(title, Modifier.padding(16.dp), style = MaterialTheme.typography.labelLarge)

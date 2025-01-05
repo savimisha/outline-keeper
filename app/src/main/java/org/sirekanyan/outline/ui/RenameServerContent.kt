@@ -11,7 +11,7 @@ import org.sirekanyan.outline.app
 import org.sirekanyan.outline.repository.ServerRepository
 
 @Composable
-private fun rememberRenameServerDelegate(router: Router, server: Server): RenameDelegate {
+private fun rememberRenameServerDelegate(router: Router, server: Server): EditDelegate {
     val context = LocalContext.current
     val servers = remember { context.app().serverRepository }
     return remember(server) { RenameServerDelegate(router, servers, server) }
@@ -21,9 +21,9 @@ private class RenameServerDelegate(
     private val router: Router,
     private val servers: ServerRepository,
     private val server: Server,
-) : RenameDelegate {
-    override suspend fun onRename(newName: String) {
-        val newServer = servers.renameServer(server, newName)
+) : EditDelegate {
+    override suspend fun onEdited(newValue: String) {
+        val newServer = servers.renameServer(server, newValue)
         router.page = SelectedPage(newServer)
     }
 }
@@ -31,6 +31,14 @@ private class RenameServerDelegate(
 @Composable
 fun RenameServerContent(router: Router, server: Server) {
     val delegate = rememberRenameServerDelegate(router, server)
-    val state = rememberRenameState(router, delegate)
-    RenameContent(state, router, R.string.outln_title_edit_server, server.name, server.getHost())
+    val state = rememberEditState(router, delegate)
+    EditContent(
+        state,
+        router,
+        R.string.outln_title_edit_server,
+        R.string.outln_label_name,
+        server.id,
+        server.name,
+        server.getHost()
+    )
 }

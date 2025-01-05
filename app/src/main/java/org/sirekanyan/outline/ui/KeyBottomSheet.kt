@@ -20,6 +20,7 @@ import androidx.compose.ui.text.AnnotatedString
 import kotlinx.coroutines.launch
 import org.sirekanyan.outline.R
 import org.sirekanyan.outline.api.model.Key
+import org.sirekanyan.outline.ext.addPrefixToKey
 import org.sirekanyan.outline.ext.showToast
 import org.sirekanyan.outline.ui.icons.IconCopy
 
@@ -27,6 +28,7 @@ import org.sirekanyan.outline.ui.icons.IconCopy
 @OptIn(ExperimentalMaterial3Api::class)
 fun KeyBottomSheet(
     key: Key,
+    prefix: String,
     onDismissRequest: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -42,7 +44,7 @@ fun KeyBottomSheet(
                 headlineContent = { Text(stringResource(R.string.outln_sheet_copy)) },
                 leadingContent = { Icon(IconCopy, null) },
                 modifier = Modifier.clickable {
-                    localClipboard.setText(AnnotatedString(key.accessUrl))
+                    localClipboard.setText(AnnotatedString(addPrefixToKey(key.accessUrl, prefix)))
                     localContext.showToast(R.string.outln_toast_copied)
                     coroutineScope.launch {
                         sheetState.hide()
@@ -62,7 +64,7 @@ fun KeyBottomSheet(
                     }
                     localContext.startActivity(
                         Intent(Intent.ACTION_SEND)
-                            .putExtra(Intent.EXTRA_TEXT, key.accessUrl)
+                            .putExtra(Intent.EXTRA_TEXT, addPrefixToKey(key.accessUrl, prefix))
                             .setType("text/plain")
                     )
                 },

@@ -11,6 +11,7 @@
     <!-- Drawer -->
     <string name="outln_drawer_add">Добавить сервер</string>
     <string name="outln_drawer_all">Все сервера</string>
+    <string name="outln_drawer_edit_prefix">Изменить префикс</string>
     <string name="outln_drawer_reset">Очистить данные</string>
     <string name="outln_drawer_about">О приложении</string>
 
@@ -67,7 +68,9 @@
     <!-- Rename Dialog -->
     <string name="outln_title_edit_server">Изменить сервер</string>
     <string name="outln_title_edit_key">Изменить ключ</string>
+    <string name="outln_title_edit_prefix">Изменить префикс</string>
     <string name="outln_label_name">Имя</string>
+    <string name="outln_label_prefix">Префикс</string>
     <string name="outln_action_save">Сохранить</string>
     <string name="outln_error_check_name">Проверьте имя и повторите снова</string>
 

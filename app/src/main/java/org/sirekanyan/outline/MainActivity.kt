@@ -17,6 +17,7 @@ import org.sirekanyan.outline.ui.AboutDialogContent
 import org.sirekanyan.outline.ui.AddServerContent
 import org.sirekanyan.outline.ui.DeleteKeyContent
 import org.sirekanyan.outline.ui.DeleteServerContent
+import org.sirekanyan.outline.ui.EditPrefixContent
 import org.sirekanyan.outline.ui.RenameKeyContent
 import org.sirekanyan.outline.ui.RenameServerContent
 import org.sirekanyan.outline.ui.theme.OutlineTheme
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
                         when (dialog) {
                             is AddServerDialog -> Surface { AddServerContent(router) }
                             is RenameServerDialog -> Surface { RenameServerContent(router, dialog.server) }
-                            is RenameKeyDialog -> Surface { RenameKeyContent(router, dialog.key) }
+                            is RenameKeyDialog -> Surface { RenameKeyContent(router, dialog.key, dialog.prefix) }
                             is DeleteKeyDialog -> {
                                 val (key) = dialog
                                 DeleteKeyContent(
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
                                     onDismiss = { state.dialog = null },
                                     onConfirm = { state.onDeleteServerConfirmed(server) }
                                 )
+                            }
+                            is EditPrefixDialog -> {
+                                Surface { EditPrefixContent(router, dialog.prefix) }
                             }
                             is AboutDialog -> {
                                 AboutDialogContent(
